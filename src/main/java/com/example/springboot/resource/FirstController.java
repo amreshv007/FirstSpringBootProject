@@ -2,6 +2,7 @@ package com.example.springboot.resource;
 
 import com.example.springboot.domain.IdAndCurrCompany;
 import com.example.springboot.domain.Person;
+import com.example.springboot.model.Persons;
 import com.example.springboot.service.FirstService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -53,5 +54,13 @@ public class FirstController {
                                                       @RequestBody IdAndCurrCompany idCurr_company) {
         System.out.println("Inside insertUser!");
         return ResponseEntity.ok().body(firstService.updateCurrCompanyInPersonsTable(idCurr_company));
+    }
+
+    @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Optional<Persons>> getUserById(HttpServletRequest httpRequest, @PathVariable int id) {
+        System.out.println("Inside getUserById!");
+
+        System.out.println("Remote Host: " + httpRequest.getRemoteHost());
+        return ResponseEntity.ok().body(firstService.getUserById(id));
     }
 }

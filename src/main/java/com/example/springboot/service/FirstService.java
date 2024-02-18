@@ -4,6 +4,8 @@ import com.example.springboot.domain.IdAndCurrCompany;
 import com.example.springboot.domain.Person;
 import com.example.springboot.exceptionHandler.DataQueryException;
 import com.example.springboot.exceptionHandler.ProjectException;
+import com.example.springboot.model.Persons;
+import com.example.springboot.repository.PersonsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -28,6 +30,9 @@ public class FirstService {
 //    @Qualifier("jdbcFriendsService")
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    PersonsRepository personsRepository;
 
     public int insertPerson(Person user) {
         try {
@@ -67,6 +72,17 @@ public class FirstService {
         } catch(DataAccessException dae) {
             throw new DataQueryException("Data Update Failed!", dae.getCause());
         }
+    }
+
+    public Optional<Persons> getUserById(int id) {
+        try {
+            return Optional.ofNullable(personsRepository.findById(id));
+
+        } catch(Exception ex) {
+            ex.getStackTrace();
+            System.out.println("Exception Occurred while SQL Data fetch by Id!");
+        }
+        return Optional.empty();
     }
 
 }
